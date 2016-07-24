@@ -40,4 +40,9 @@ public class UserServiceImpl implements UserService {
 		return userDao.getAllUsers();
 	}
 
+	@Transactional
+	public boolean isUserExists(User user) {
+		return userDao.isUserExists(user);
+	}
+
 }

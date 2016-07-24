@@ -5,13 +5,15 @@ import java.util.List;
 import com.codecool.fightclub.model.User;
 
 public interface UserDao {
-	public void insert(User user);
+	void insert(User user);
 
-	public void modify(User user);
+	void modify(User user);
 
-	public void delete(int id);
+	void delete(int id);
 
-	public User getUser(int id);
+	User getUser(int id);
 
-	public List<User> getAllUsers();
+	List<User> getAllUsers();
+
+	boolean isUserExists(User user);
 }
