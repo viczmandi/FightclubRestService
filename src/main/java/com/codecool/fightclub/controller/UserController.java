@@ -1,5 +1,7 @@
 package com.codecool.fightclub.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,9 +40,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	public void createUser(@RequestBody User user) {
+	public void createUser(@RequestBody User user, HttpServletResponse response) {
 		if (!userService.isUserExists(user)) {
 			userService.insert(user);
+		} else {
+			response.setStatus(HttpServletResponse.SC_CONFLICT);
 		}
 	}
 

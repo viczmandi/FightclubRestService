@@ -11,9 +11,6 @@
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
-<!-- 	<listener> -->
-<!-- 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> -->
-<!-- 	</listener> -->
 	<servlet>
 		<servlet-name>fightclub</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -23,13 +20,4 @@
 		<servlet-name>fightclub</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
-<!-- 	<welcome-file-list> -->
-<!-- 		<welcome-file>index.html</welcome-file> -->
-<!-- 		<welcome-file>index.htm</welcome-file> -->
-<!-- 		<welcome-file>index.jsp</welcome-file> -->
-<!-- 		<welcome-file>default.html</welcome-file> -->
-<!-- 		<welcome-file>default.htm</welcome-file> -->
-<!-- 		<welcome-file>default.jsp</welcome-file> -->
-<!-- 	</welcome-file-list> -->
 </web-app>
