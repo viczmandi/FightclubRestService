@@ -162,4 +162,13 @@ public class User {
 	public void setImage(String image) {
 		this.image = image;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", age=" + age + ", emailAddress=" + emailAddress + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", password=" + password + ", userName=" + userName + ", gender=" + gender
+				+ ", phoneNumber=" + phoneNumber + ", country=" + country + ", city=" + city + ", address=" + address
+				+ ", zipcode=" + zipcode + ", image=" + image + "]";
+	}
+
 }

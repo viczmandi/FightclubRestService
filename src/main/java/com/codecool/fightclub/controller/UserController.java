@@ -34,16 +34,14 @@ public class UserController {
 
 	@RequestMapping("/")
 	public String welcome() {
-		return "Welcome to Fightclub backend.";
+		return "Welcome to Fightclub Rest Service.";
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public void createUser(@RequestBody User user) {
-		// validate
-
-		// after validation
-		System.out.println(user.getFirstName());
-		userService.insert(user);
+		if (!userService.isUserExists(user)) {
+			userService.insert(user);
+		}
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.PUT)

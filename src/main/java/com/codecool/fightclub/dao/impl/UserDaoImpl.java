@@ -35,10 +35,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	public boolean isUserExists(User user) {
-		String userName = user.getUserName();
-		String emailAddress = user.getEmailAddress();
-		List<User> userList = getAllUsers();
-		return userList.contains(userName) && userList.contains(emailAddress);
+		return session.getCurrentSession().createQuery("select userName from User").list().contains(user.getUserName())
+				&& session.getCurrentSession().createQuery("select emailAddress from User").list()
+						.contains(user.getEmailAddress());
 	}
-
 }
