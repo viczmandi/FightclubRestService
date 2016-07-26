@@ -2,6 +2,7 @@ package com.codecool.fightclub.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.codecool.fightclub.model.LoginBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codecool.fightclub.model.User;
 import com.codecool.fightclub.password.Password;
 import com.codecool.fightclub.service.UserService;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -69,5 +73,23 @@ public class UserController {
 
 		// after validation
 		userService.delete(user.getId());
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ModelAndView submitLogin(@RequestBody LoginBean loginBean, ModelAndView modelAndView){
+		List<User> userList = userService.getAllUsers();
+		for (User u:
+				userList)
+		{
+			if (loginBean.getEmailAddress().equals(u.getEmailAddress()) &&
+					loginBean.getPassword().equals(u.getPassword())) {
+				modelAndView.setViewName("User");
+				break;
+			}
+			else {
+				modelAndView.setViewName("Failure");
+			}
+		}
+		return modelAndView;
 	}
 }
