@@ -48,14 +48,12 @@ public class UserController {
 	public void createUser(@Valid @RequestBody User user, HttpServletResponse response, BindingResult result) {
 		if (!userService.isUserExists(user)) {
 			if (result.hasErrors()) {
-				response.setStatus(HttpServletResponse.SC_CONFLICT);
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				System.out.println(result);
 			} else {
 				User newUser = user;
 				newUser.setPassword(Password.hashPassword(newUser.getPassword()));
-
 				userService.insert(newUser);
-
 				response.setStatus(HttpServletResponse.SC_CREATED);
 			}
 		} else {
