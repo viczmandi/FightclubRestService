@@ -3,8 +3,6 @@ package com.codecool.fightclub.validator;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.codecool.fightclub.model.Phone;
-
 public class PhoneValidator implements ConstraintValidator<Phone, String> {
 	public void initialize(Phone paramA) {
 	}

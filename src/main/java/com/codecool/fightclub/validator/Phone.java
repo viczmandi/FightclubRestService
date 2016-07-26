@@ -1,4 +1,4 @@
-package com.codecool.fightclub.model;
+package com.codecool.fightclub.validator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-
-import com.codecool.fightclub.validator.PhoneValidator;
 
 @Documented
 @Constraint(validatedBy = PhoneValidator.class)

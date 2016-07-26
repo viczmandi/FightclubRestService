@@ -3,6 +3,8 @@ package com.codecool.fightclub.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.codecool.fightclub.validator.Phone;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -23,7 +26,6 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	// @DateTimeFormat(pattern="yyyy-/MM-/dd")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@NotNull
 	@Past
@@ -45,7 +47,7 @@ public class User {
 	@Size(min = 1, max = 30)
 	private String userName;
 
-	@NotNull
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
 	@Phone
@@ -60,7 +62,6 @@ public class User {
 	@Size(min = 1, max = 30)
 	private String address;
 
-	// @Size(min=4, max=6)
 	private int zipcode;
 
 	private String image;
