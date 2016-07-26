@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codecool.fightclub.model.User;
 import com.codecool.fightclub.password.Password;
 import com.codecool.fightclub.service.UserService;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+
+import static com.codecool.fightclub.password.Password.checkPassword;
 
 @RestController
 public class UserController {
@@ -22,26 +23,24 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	// @RequestMapping(value = "/login", method = RequestMethod.POST)
-	// public void login(HttpSession session, LoginBean loginBean) {
-	// String email = loginBean.getEmail();
-	// String password = loginBean.getPassword();
-	//
-	// // ....
-	//
-	// session.setMaxInactiveInterval(60);
-	// }
-	//
-	// @RequestMapping(value = "/logout", method = RequestMethod.POST)
-	// public void logout(HttpSession session) {
-	// if (session != null) {
-	// session.invalidate();
-	// }
-	// }
-
 	@RequestMapping("/")
 	public String welcome() {
 		return "Welcome to Fightclub Rest Service.";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public void submitLogin(@RequestBody LoginBean loginBean, HttpServletResponse response) {
+		List<User> userList = userService.getAllUsers();
+		for (User u :
+				userList) {
+			if (loginBean.getEmailAddress().equals(u.getEmailAddress()) &&
+					checkPassword(loginBean.getPassword(), u.getPassword())) {
+				response.setStatus(HttpServletResponse.SC_ACCEPTED);
+				break;
+			} else {
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			}
+		}
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
@@ -74,22 +73,5 @@ public class UserController {
 		// after validation
 		userService.delete(user.getId());
 	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView submitLogin(@RequestBody LoginBean loginBean, ModelAndView modelAndView){
-		List<User> userList = userService.getAllUsers();
-		for (User u:
-				userList)
-		{
-			if (loginBean.getEmailAddress().equals(u.getEmailAddress()) &&
-					loginBean.getPassword().equals(u.getPassword())) {
-				modelAndView.setViewName("User");
-				break;
-			}
-			else {
-				modelAndView.setViewName("Failure");
-			}
-		}
-		return modelAndView;
-	}
 }
+
