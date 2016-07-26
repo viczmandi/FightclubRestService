@@ -1,12 +1,20 @@
 package com.codecool.fightclub.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "user")
@@ -14,29 +22,58 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	private int age;
-	private String emailAddress;
-	private String firstName;
-	private String lastName;
-	private String password;
+
+	// @DateTimeFormat(pattern="yyyy-/MM-/dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@NotNull
+	@Past
+	private Date birthDate;
+
 	@NotEmpty
+	@Email
+	private String emailAddress;
+
+	@Size(min = 1, max = 30)
+	private String firstName;
+
+	@Size(min = 1, max = 30)
+	private String lastName;
+
+	@Size(min = 1, max = 30)
+	private String password;
+
+	@Size(min = 1, max = 30)
 	private String userName;
-	private String gender;
-	private long phoneNumber;
+
+	@NotNull
+	private Gender gender;
+
+	@Phone
+	private String phoneNumber;
+
+	@Size(min = 1, max = 30)
 	private String country;
+
+	@Size(min = 1, max = 30)
 	private String city;
+
+	@Size(min = 1, max = 30)
 	private String address;
+
+	// @Size(min=4, max=6)
 	private int zipcode;
+
 	private String image;
 
 	public User() {
 	}
 
-	public User(int id, int age, String emailAddress, String firstName, String lastName, String password,
-			String userName, String gender, long phoneNumber, String country, String city, String address, int zipcode,
-			String image) {
+	public User(int id, Date birthDate, String emailAddress, String firstName, String lastName, String password,
+			String userName, Gender gender, String phoneNumber, String country, String city, String address,
+			int zipcode, String image) {
+		super();
 		this.id = id;
-		this.age = age;
+		this.birthDate = birthDate;
 		this.emailAddress = emailAddress;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -59,12 +96,12 @@ public class User {
 		this.id = id;
 	}
 
-	public int getAge() {
-		return age;
+	public Date getBirthDate() {
+		return birthDate;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	public String getEmailAddress() {
@@ -107,19 +144,19 @@ public class User {
 		this.userName = userName;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 
-	public long getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(long phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -165,10 +202,10 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", age=" + age + ", emailAddress=" + emailAddress + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", password=" + password + ", userName=" + userName + ", gender=" + gender
-				+ ", phoneNumber=" + phoneNumber + ", country=" + country + ", city=" + city + ", address=" + address
-				+ ", zipcode=" + zipcode + ", image=" + image + "]";
+		return "User [id=" + id + ", birthDate=" + birthDate + ", emailAddress=" + emailAddress + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", password=" + password + ", userName=" + userName
+				+ ", gender=" + gender + ", phoneNumber=" + phoneNumber + ", country=" + country + ", city=" + city
+				+ ", address=" + address + ", zipcode=" + zipcode + ", image=" + image + "]";
 	}
 
 }

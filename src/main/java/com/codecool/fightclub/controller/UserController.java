@@ -1,21 +1,23 @@
 package com.codecool.fightclub.controller;
 
-import javax.servlet.http.HttpServletResponse;
+import static com.codecool.fightclub.password.Password.checkPassword;
 
-import com.codecool.fightclub.model.LoginBean;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codecool.fightclub.model.LoginBean;
 import com.codecool.fightclub.model.User;
 import com.codecool.fightclub.password.Password;
 import com.codecool.fightclub.service.UserService;
-
-import java.util.List;
-
-import static com.codecool.fightclub.password.Password.checkPassword;
 
 @RestController
 public class UserController {
@@ -31,10 +33,9 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public void submitLogin(@RequestBody LoginBean loginBean, HttpServletResponse response) {
 		List<User> userList = userService.getAllUsers();
-		for (User u :
-				userList) {
-			if (loginBean.getEmailAddress().equals(u.getEmailAddress()) &&
-					checkPassword(loginBean.getPassword(), u.getPassword())) {
+		for (User u : userList) {
+			if (loginBean.getEmailAddress().equals(u.getEmailAddress())
+					&& checkPassword(loginBean.getPassword(), u.getPassword())) {
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 				break;
 			} else {
@@ -44,15 +45,19 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	public void createUser(@RequestBody User user, HttpServletResponse response) {
+	public void createUser(@Valid @RequestBody User user, HttpServletResponse response, BindingResult result) {
 		if (!userService.isUserExists(user)) {
+			if (result.hasErrors()) {
+				response.setStatus(HttpServletResponse.SC_CONFLICT);
+				System.out.println(result);
+			} else {
+				User newUser = user;
+				newUser.setPassword(Password.hashPassword(newUser.getPassword()));
 
-			User newUser = user;
-			newUser.setPassword(Password.hashPassword(newUser.getPassword()));
+				userService.insert(newUser);
 
-			userService.insert(newUser);
-
-			response.setStatus(HttpServletResponse.SC_CREATED);
+				response.setStatus(HttpServletResponse.SC_CREATED);
+			}
 		} else {
 			response.setStatus(HttpServletResponse.SC_CONFLICT);
 		}
@@ -74,4 +79,3 @@ public class UserController {
 		userService.delete(user.getId());
 	}
 }
-
