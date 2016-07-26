@@ -1,6 +1,8 @@
 C:\Users\viczmandni\Java_workspace\Fightclub\src\main\java\com\codecool\fightclub\dao\UserDao.java
 C:\Users\viczmandni\Java_workspace\Fightclub\src\main\java\com\codecool\fightclub\service\impl\UserServiceImpl.java
+C:\Users\viczmandni\Java_workspace\Fightclub\src\main\java\com\codecool\fightclub\password\BCrypt.java
 C:\Users\viczmandni\Java_workspace\Fightclub\src\main\java\com\codecool\fightclub\dao\impl\UserDaoImpl.java
 C:\Users\viczmandni\Java_workspace\Fightclub\src\main\java\com\codecool\fightclub\controller\UserController.java
 C:\Users\viczmandni\Java_workspace\Fightclub\src\main\java\com\codecool\fightclub\model\User.java
+C:\Users\viczmandni\Java_workspace\Fightclub\src\main\java\com\codecool\fightclub\password\Password.java
 C:\Users\viczmandni\Java_workspace\Fightclub\src\main\java\com\codecool\fightclub\service\UserService.java

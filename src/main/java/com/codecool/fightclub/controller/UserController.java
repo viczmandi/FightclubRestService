@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codecool.fightclub.model.User;
+import com.codecool.fightclub.password.Password;
 import com.codecool.fightclub.service.UserService;
 
 @RestController
@@ -42,7 +43,13 @@ public class UserController {
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public void createUser(@RequestBody User user, HttpServletResponse response) {
 		if (!userService.isUserExists(user)) {
-			userService.insert(user);
+
+			User newUser = user;
+			newUser.setPassword(Password.hashPassword(newUser.getPassword()));
+
+			userService.insert(newUser);
+
+			response.setStatus(HttpServletResponse.SC_CREATED);
 		} else {
 			response.setStatus(HttpServletResponse.SC_CONFLICT);
 		}
