@@ -4,7 +4,9 @@ import static com.codecool.fightclub.password.Password.checkPassword;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,17 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void submitLogin(@RequestBody LoginBean loginBean, HttpServletResponse response) {
+	public void submitLogin(@RequestBody LoginBean loginBean, HttpServletResponse response, HttpSession session) {
+
 		List<User> userList = userService.getAllUsers();
-		for (User u : userList) {
-			if (loginBean.getEmailAddress().equals(u.getEmailAddress())
-					&& checkPassword(loginBean.getPassword(), u.getPassword())) {
+		for (User u :
+				userList) {
+			if (loginBean.getEmailAddress().equals(u.getEmailAddress()) &&
+					checkPassword(loginBean.getPassword(), u.getPassword())) {
+
+				session.setAttribute("session", u.getId());
+				session.setMaxInactiveInterval(3 * 60);
+
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 				break;
 			} else {
@@ -75,5 +83,32 @@ public class UserController {
 
 		// after validation
 		userService.delete(user.getId());
+	}
+
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public User getUser(User user, HttpSession session, HttpServletResponse response) {
+		// validate
+
+		// after validation
+		try {
+			Integer userloggedin = (Integer) session.getAttribute("session");
+			List<User> userList = userService.getAllUsers();
+			for (User u :
+					userList) {
+				if (userloggedin.equals(u.getId())) {
+
+					user = userService.getUser(userloggedin);
+					return user;
+
+				} else {
+					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				}
+
+			}
+
+		} catch (NullPointerException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		return null;
 	}
 }
