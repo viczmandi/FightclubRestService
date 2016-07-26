@@ -4,7 +4,6 @@ import static com.codecool.fightclub.password.Password.checkPassword;
 
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -36,10 +35,9 @@ public class UserController {
 	public void submitLogin(@RequestBody LoginBean loginBean, HttpServletResponse response, HttpSession session) {
 
 		List<User> userList = userService.getAllUsers();
-		for (User u :
-				userList) {
-			if (loginBean.getEmailAddress().equals(u.getEmailAddress()) &&
-					checkPassword(loginBean.getPassword(), u.getPassword())) {
+		for (User u : userList) {
+			if (loginBean.getEmailAddress().equals(u.getEmailAddress())
+					&& checkPassword(loginBean.getPassword(), u.getPassword())) {
 
 				session.setAttribute("session", u.getId());
 				session.setMaxInactiveInterval(3 * 60);
@@ -93,8 +91,7 @@ public class UserController {
 		try {
 			Integer userloggedin = (Integer) session.getAttribute("session");
 			List<User> userList = userService.getAllUsers();
-			for (User u :
-					userList) {
+			for (User u : userList) {
 				if (userloggedin.equals(u.getId())) {
 
 					user = userService.getUser(userloggedin);
