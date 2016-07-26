@@ -44,10 +44,6 @@ public class UserController {
 				session.setAttribute("session", u.getId());
 				session.setMaxInactiveInterval(3 * 60);
 
-				Cookie user = new Cookie("user", u.getEmailAddress());
-				user.setMaxAge(3 * 60);
-				response.addCookie(user);
-
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 				break;
 			} else {
