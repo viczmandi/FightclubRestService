@@ -100,25 +100,21 @@ public class UserController {
 
 		try {
 			Integer userloggedin = (Integer) session.getAttribute("session");
+			System.out.println(session.getId());
 			List<User> userList = userService.getAllUsers();
 			for (User u :
 					userList) {
 				if (userloggedin.equals(u.getId())) {
 
 					user = userService.getUser(userloggedin);
+					response.setStatus(HttpServletResponse.SC_FOUND);
 					return user;
-
-				} else {
-					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				}
-
 			}
-
 		} catch (NullPointerException e){
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		}
 		return null;
-	}
 
 
 }
