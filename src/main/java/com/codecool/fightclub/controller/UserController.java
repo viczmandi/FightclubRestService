@@ -35,12 +35,13 @@ public class UserController {
 	public void submitLogin(@RequestBody LoginBean loginBean, HttpServletResponse response, HttpSession session) {
 
 		List<User> userList = userService.getAllUsers();
-		for (User u : userList) {
-			if (loginBean.getEmailAddress().equals(u.getEmailAddress())
-					&& checkPassword(loginBean.getPassword(), u.getPassword())) {
+		for (User u :
+				userList) {
+			if (loginBean.getEmailAddress().equals(u.getEmailAddress()) &&
+					checkPassword(loginBean.getPassword(), u.getPassword())) {
 
 				session.setAttribute("session", u.getId());
-				session.setMaxInactiveInterval(3 * 60);
+				session.setMaxInactiveInterval(3*60);
 
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 				break;
