@@ -97,14 +97,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.DELETE)
-	public void deleteUser(User user, HttpSession session, LoginBean loginBean) {
+	public void deleteUser(HttpSession session, @RequestBody LoginBean loginBean) {
 		// validate
 		Integer loggedInUserId = (Integer) session.getAttribute("session");
-		System.out.println(loggedInUserId);
 		User deleteUser = userService.getUser(loggedInUserId);
-		System.out.println(deleteUser);
 		boolean confirmed = Password.checkPassword(loginBean.getPassword(), deleteUser.getPassword());
-		System.out.println(confirmed);
 		// after validation
 		if (confirmed) {
 			userService.delete(loggedInUserId);
