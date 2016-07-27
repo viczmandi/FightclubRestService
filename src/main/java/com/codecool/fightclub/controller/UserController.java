@@ -35,12 +35,13 @@ public class UserController {
 	public void submitLogin(@RequestBody LoginBean loginBean, HttpServletResponse response, HttpSession session) {
 
 		List<User> userList = userService.getAllUsers();
-		for (User u : userList) {
-			if (loginBean.getEmailAddress().equals(u.getEmailAddress())
-					&& checkPassword(loginBean.getPassword(), u.getPassword())) {
+		for (User u :
+				userList) {
+			if (loginBean.getEmailAddress().equals(u.getEmailAddress()) &&
+					checkPassword(loginBean.getPassword(), u.getPassword())) {
 
 				session.setAttribute("session", u.getId());
-				session.setMaxInactiveInterval(3 * 60);
+				session.setMaxInactiveInterval(3*60);
 
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 				break;
@@ -81,11 +82,14 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.DELETE)
-	public void deleteUser(User user) {
+	public int deleteUser(User user,HttpSession session) {
 		// validate
 
 		// after validation
-		userService.delete(user.getId());
+		Integer userloggedin = (Integer) session.getAttribute("session");
+		System.out.println(userloggedin);
+		return userloggedin;
+//		userService.delete(user.getId());
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -93,10 +97,12 @@ public class UserController {
 		// validate
 
 		// after validation
+
 		try {
 			Integer userloggedin = (Integer) session.getAttribute("session");
 			List<User> userList = userService.getAllUsers();
-			for (User u : userList) {
+			for (User u :
+					userList) {
 				if (userloggedin.equals(u.getId())) {
 
 					user = userService.getUser(userloggedin);
@@ -108,9 +114,11 @@ public class UserController {
 
 			}
 
-		} catch (NullPointerException e) {
+		} catch (NullPointerException e){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		return null;
 	}
+
+
 }
