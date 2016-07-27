@@ -35,13 +35,12 @@ public class UserController {
 	public void submitLogin(@RequestBody LoginBean loginBean, HttpServletResponse response, HttpSession session) {
 
 		List<User> userList = userService.getAllUsers();
-		for (User u :
-				userList) {
-			if (loginBean.getEmailAddress().equals(u.getEmailAddress()) &&
-					checkPassword(loginBean.getPassword(), u.getPassword())) {
+		for (User u : userList) {
+			if (loginBean.getEmailAddress().equals(u.getEmailAddress())
+					&& checkPassword(loginBean.getPassword(), u.getPassword())) {
 
 				session.setAttribute("session", u.getId());
-				session.setMaxInactiveInterval(3*60);
+				session.setMaxInactiveInterval(3 * 60);
 
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 				break;
@@ -73,12 +72,13 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.PUT)
-	public void modifyUser(User user, HttpSession session) {
+	public void modifyUser(@RequestBody User user, HttpSession session) {
 		// validate
 
 		// after validation
-		Integer userloggedin = (Integer) session.getAttribute("session");
-		User modifiedUser = userService.getUser(userloggedin);
+		Integer loggedInUserId = (Integer) session.getAttribute("session");
+		User modifiedUser = userService.getUser(loggedInUserId);
+
 		modifiedUser.setBirthDate(user.getBirthDate());
 		modifiedUser.setEmailAddress(user.getEmailAddress());
 		modifiedUser.setFirstName(user.getFirstName());
@@ -92,16 +92,23 @@ public class UserController {
 		modifiedUser.setAddress(user.getAddress());
 		modifiedUser.setZipcode(user.getZipcode());
 		modifiedUser.setImage(user.getImage());
+
 		userService.modify(modifiedUser);
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.DELETE)
-	public void deleteUser(User user, HttpSession session) {
+	public void deleteUser(User user, HttpSession session, LoginBean loginBean) {
 		// validate
-
+		Integer loggedInUserId = (Integer) session.getAttribute("session");
+		System.out.println(loggedInUserId);
+		User deleteUser = userService.getUser(loggedInUserId);
+		System.out.println(deleteUser);
+		boolean confirmed = Password.checkPassword(loginBean.getPassword(), deleteUser.getPassword());
+		System.out.println(confirmed);
 		// after validation
-		Integer userloggedin = (Integer) session.getAttribute("session");
-		userService.delete(userloggedin);
+		if (confirmed) {
+			userService.delete(loggedInUserId);
+		}
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -111,13 +118,13 @@ public class UserController {
 		// after validation
 
 		try {
-			Integer userloggedin = (Integer) session.getAttribute("session");
+			Integer loggedInUserId = (Integer) session.getAttribute("session");
 			System.out.println(session.getId());
 			List<User> userList = userService.getAllUsers();
 			for (User u : userList) {
-				if (userloggedin.equals(u.getId())) {
+				if (loggedInUserId.equals(u.getId())) {
 
-					user = userService.getUser(userloggedin);
+					user = userService.getUser(loggedInUserId);
 					response.setStatus(HttpServletResponse.SC_FOUND);
 					return user;
 				}
