@@ -60,7 +60,6 @@ public class UserController {
 		if (!userService.isUserExists(user)) {
 			if (result.hasErrors()) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				System.out.println(result);
 			} else {
 				User newUser = user;
 				newUser.setPassword(Password.hashPassword(newUser.getPassword()));
@@ -73,19 +72,35 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.PUT)
-	public void modifyUser(User user) {
+	public void modifyUser(User user, HttpSession session) {
 		// validate
 
 		// after validation
-		userService.modify(user);
+		Integer userloggedin = (Integer) session.getAttribute("session");
+		User modifiedUser = userService.getUser(userloggedin);
+		modifiedUser.setBirthDate(user.getBirthDate());
+		modifiedUser.setEmailAddress(user.getEmailAddress());
+		modifiedUser.setFirstName(user.getFirstName());
+		modifiedUser.setLastName(user.getLastName());
+		modifiedUser.setPassword(Password.hashPassword(user.getPassword()));
+		modifiedUser.setUserName(user.getUserName());
+		modifiedUser.setGender(user.getGender());
+		modifiedUser.setPhoneNumber(user.getPhoneNumber());
+		modifiedUser.setCountry(user.getCountry());
+		modifiedUser.setCity(user.getCity());
+		modifiedUser.setAddress(user.getAddress());
+		modifiedUser.setZipcode(user.getZipcode());
+		modifiedUser.setImage(user.getImage());
+		userService.modify(modifiedUser);
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.DELETE)
-	public void deleteUser(User user) {
+	public void deleteUser(User user, HttpSession session) {
 		// validate
 
 		// after validation
-		userService.delete(user.getId());
+		Integer userloggedin = (Integer) session.getAttribute("session");
+		userService.delete(userloggedin);
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -93,24 +108,23 @@ public class UserController {
 		// validate
 
 		// after validation
+
 		try {
 			Integer userloggedin = (Integer) session.getAttribute("session");
+			System.out.println(session.getId());
 			List<User> userList = userService.getAllUsers();
 			for (User u : userList) {
 				if (userloggedin.equals(u.getId())) {
 
 					user = userService.getUser(userloggedin);
+					response.setStatus(HttpServletResponse.SC_FOUND);
 					return user;
-
-				} else {
-					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				}
-
 			}
-
 		} catch (NullPointerException e) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		}
 		return null;
+
 	}
 }
