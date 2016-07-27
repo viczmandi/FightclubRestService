@@ -50,6 +50,11 @@ public class UserController {
 		}
 	}
 
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public void submitLogout(HttpSession session, HttpServletResponse response) {
+		session.removeAttribute("session");
+	}
+
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public void createUser(@Valid @RequestBody User user, HttpServletResponse response, BindingResult result) {
 		if (!userService.isUserExists(user)) {
