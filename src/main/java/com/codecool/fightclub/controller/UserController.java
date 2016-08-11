@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codecool.fightclub.model.LoginBean;
+import com.codecool.fightclub.model.UserBean;
 import com.codecool.fightclub.model.User;
 import com.codecool.fightclub.password.Password;
 import com.codecool.fightclub.service.UserService;
@@ -32,12 +32,12 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void submitLogin(@RequestBody LoginBean loginBean, HttpServletResponse response, HttpSession session) {
+	public void submitLogin(@RequestBody UserBean userBean, HttpServletResponse response, HttpSession session) {
 
 		List<User> userList = userService.getAllUsers();
 		for (User u : userList) {
-			if (loginBean.getEmailAddress().equals(u.getEmailAddress())
-					&& checkPassword(loginBean.getPassword(), u.getPassword())) {
+			if (userBean.getEmailAddress().equals(u.getEmailAddress())
+					&& checkPassword(userBean.getPassword(), u.getPassword())) {
 
 				session.setAttribute("session", u.getId());
 				session.setMaxInactiveInterval(3 * 60);
@@ -97,11 +97,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.DELETE)
-	public void deleteUser(HttpSession session, @RequestBody LoginBean loginBean) {
+	public void deleteUser(HttpSession session, @RequestBody UserBean userBean) {
 		// validate
 		Integer loggedInUserId = (Integer) session.getAttribute("session");
 		User deleteUser = userService.getUser(loggedInUserId);
-		boolean confirmed = Password.checkPassword(loginBean.getPassword(), deleteUser.getPassword());
+		boolean confirmed = Password.checkPassword(userBean.getPassword(), deleteUser.getPassword());
 		// after validation
 		if (confirmed) {
 			userService.delete(loggedInUserId);

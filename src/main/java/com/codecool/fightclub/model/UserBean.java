@@ -2,7 +2,7 @@ package com.codecool.fightclub.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class LoginBean {
+public class UserBean {
 
     @NotEmpty
     private String emailAddress;
