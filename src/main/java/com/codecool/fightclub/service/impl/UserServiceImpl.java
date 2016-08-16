@@ -36,13 +36,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional
+	public User getUserByEmail(String emailAddress) {
+		return userDao.getUserByEmail(emailAddress);
+	}
+
+	@Transactional
 	public List<User> getAllUsers() {
 		return userDao.getAllUsers();
+	}
+
+	@Transactional
+	public List<String> getAllUsersEmail() {
+		return userDao.getAllUsersEmail();
 	}
 
 	@Transactional
 	public boolean isUserExists(User user) {
 		return userDao.isUserExists(user);
 	}
+
+
+
 
 }
