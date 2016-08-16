@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codecool.fightclub.model.UserBean;
 import com.codecool.fightclub.model.User;
+import com.codecool.fightclub.model.UserBean;
 import com.codecool.fightclub.password.Password;
 import com.codecool.fightclub.service.UserService;
 
