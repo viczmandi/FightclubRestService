@@ -1,7 +1,5 @@
 {
   "name": "Fightclub",
   "description": "Fightclub Rest Service",
-  "repository": "https://github.com/viczmandi/FightclubRestService",
-  "logo": "",
-  "keywords": []
+  "repository": "https://github.com/viczmandi/FightclubRestService"
 }
