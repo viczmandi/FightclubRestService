@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codecool.fightclub.model.User;
 import com.codecool.fightclub.model.UserBean;
+import com.codecool.fightclub.model.User;
 import com.codecool.fightclub.password.Password;
 import com.codecool.fightclub.service.UserService;
 
@@ -34,21 +34,27 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public void submitLogin(@RequestBody UserBean userBean, HttpServletResponse response, HttpSession session) {
 
-		List<User> userList = userService.getAllUsers();
-		for (User u : userList) {
-			if (userBean.getEmailAddress().equals(u.getEmailAddress())
-					&& checkPassword(userBean.getPassword(), u.getPassword())) {
+		String loginEmail = userBean.getEmailAddress();
+		String loginPassword = userBean.getPassword();
+		List<String> usersEmailList = userService.getAllUsersEmail();
+		for (String s : usersEmailList) {
+			if (loginEmail.equals(s)) {
+				System.out.println(s);
+					User currentUser = userService.getUserByEmail(s);
+					if (checkPassword(loginPassword, currentUser.getPassword())) {
+						session.setAttribute("session", currentUser.getId());
+						session.setMaxInactiveInterval(3 * 60);
+						response.setStatus(HttpServletResponse.SC_ACCEPTED);
+						break;
+					}
 
-				session.setAttribute("session", u.getId());
-				session.setMaxInactiveInterval(3 * 60);
-
-				response.setStatus(HttpServletResponse.SC_ACCEPTED);
-				break;
-			} else {
+			}else {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				}
 			}
 		}
-	}
+
+
 
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public void submitLogout(HttpSession session, HttpServletResponse response) {
