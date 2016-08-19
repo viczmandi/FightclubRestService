@@ -54,8 +54,4 @@ public class UserServiceImpl implements UserService {
 	public boolean isUserExists(User user) {
 		return userDao.isUserExists(user);
 	}
-
-
-
-
 }
