@@ -1,7 +1,7 @@
 CREATE SCHEMA fightclub_db ;
 
 CREATE TABLE fightclub_db.user (
-id integer NOT NULL AUTO_INCREMENT,
+id serial NOT NULL,
 birthDate date NOT NULL,
 emailAddress varchar(255) NOT NULL,
 firstName varchar(255) NOT NULL,
@@ -9,12 +9,12 @@ lastName varchar(255) NOT NULL,
 password varchar(255) NOT NULL,
 userName varchar(20) NOT NULL,
 gender varchar(10) NOT NULL,
-phoneNumber mediumtext NOT NULL,
+phoneNumber text NOT NULL,
 country varchar(30) NOT NULL,
 city varchar(30) NOT NULL,
 address varchar(30) NOT NULL,
 zipcode integer NOT NULL,
-image mediumblob NOT NULL,
+image bytea NOT NULL,
 PRIMARY KEY (id)
 );
 

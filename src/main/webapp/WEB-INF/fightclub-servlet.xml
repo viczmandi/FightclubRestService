@@ -23,9 +23,9 @@
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 	<mvc:annotation-driven validator="myBeansValidator" />
 
-	<!-- <bean id="propertyConfigurer" -->
-	<!-- class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" -->
-	<!-- p:location="/WEB-INF/jdbc.properties" /> -->
+	<bean id="propertyConfigurer"
+	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+	p:location="/WEB-INF/jdbc.properties" />
 
 	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" -->
 	<!-- destroy-method="close" p:driverClassName="${jdbc.driverClassName}" -->
